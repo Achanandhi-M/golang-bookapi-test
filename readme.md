@@ -1,8 +1,8 @@
-Book Tracker API
+# Book Tracker API
 
-A RESTful API built with Go for tracking books you're reading. You can manage book details like title, author, and reading progress, with all data stored in a PostgreSQL database. The project is containerized using Docker and includes unit, integration, and API tests to ensure reliability.
+## A RESTful API built with Go for tracking books you're reading. You can manage book details like title, author, and reading progress, with all data stored in a PostgreSQL database. The project is containerized using Docker and includes unit, integration, and API tests to ensure reliability.
 
-Features
+### Features
 
 * Create a book: Add a new book with title, author, and progress (POST `/books`)
 * Retrieve all books: List all books (GET `/books`)
@@ -11,7 +11,7 @@ Features
 * Validation: Ensures non-empty title, author, and non-negative progress
 * High Test Coverage: Approximately 86% coverage with unit, integration, and API tests
 
-Tech Stack
+### Tech Stack
 
 * Language: Go (Golang)
 * Database: PostgreSQL
@@ -20,7 +20,7 @@ Tech Stack
 * Containerization: Docker & Docker Compose
 * Testing: Go’s testing package with httptest
 
-Project Structure
+## Project Structure
 
 ```
 book-tracker/
@@ -50,7 +50,7 @@ book-tracker/
         └── handlers_test.go
 ```
 
-Explanation of Structure:
+## Explanation of Structure:
 
 * `cmd/server/main.go`: The entry point that sets up the HTTP server
 * `internal/`: Contains private application logic including handlers, models, db code, and repository pattern
@@ -58,7 +58,7 @@ Explanation of Structure:
 * `.env`: Stores environment variables for configuring the database
 * `Dockerfile` & `docker-compose.yml`: Used for containerizing and orchestrating the app and database
 
-Prerequisites
+## Prerequisites
 
 To run this project, make sure you have:
 
@@ -68,7 +68,7 @@ To run this project, make sure you have:
 * curl (optional): For manually testing the API
 * Go (optional): Only required if not using Docker
 
-Setup Instructions
+## Setup Instructions
 
 Step 1: Clone the Repository
 
@@ -106,7 +106,7 @@ Verify that containers are running:
 docker ps
 ```
 
-Running the Application
+## Running the Application
 
 Once the containers are up, the API is available at `http://localhost:8080`. You can test it using curl or Postman.
 
@@ -160,7 +160,7 @@ Expected: HTTP 400 Bad Request with error message
 
 Note: A script `test_api_curl_commands.sh` is available for testing all endpoints at once.
 
-Running Tests
+## Running Tests
 
 The app includes all types of tests and reaches approximately 86% coverage.
 
@@ -196,7 +196,7 @@ docker cp book-tracker-app-1:/app/coverage.html .
 
 Open `coverage.html` in your browser to explore the coverage visually.
 
-Troubleshooting
+## Troubleshooting
 
 API Not Responding
 
@@ -222,7 +222,7 @@ To wipe the `books` table:
 docker exec -it book-tracker-app-1 psql -h db -U bookuser -d bookdb -c "TRUNCATE TABLE books RESTART IDENTITY;"
 ```
 
-Contributing
+## Contributing
 
 1. Fork this repository
 2. Create a feature branch: `git checkout -b feature/your-feature`
@@ -230,6 +230,6 @@ Contributing
 4. Push it: `git push origin feature/your-feature`
 5. Open a pull request
 
-Acknowledgments
+## Acknowledgments
 
 This project was inspired by Go's clean and minimal architecture. Thanks to open-source contributors of libraries like gorilla/mux and sqlx for making development easy and robust.

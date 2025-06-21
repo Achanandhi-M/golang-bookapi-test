@@ -1,6 +1,6 @@
 # Book Tracker API
 
-## A RESTful API built with Go for tracking books you're reading. You can manage book details like title, author, and reading progress, with all data stored in a PostgreSQL database. The project is containerized using Docker and includes unit, integration, and API tests to ensure reliability.
+### A RESTful API built with Go for tracking books you're reading. You can manage book details like title, author, and reading progress, with all data stored in a PostgreSQL database. The project is containerized using Docker and includes unit, integration, and API tests to ensure reliability.
 
 ### Features
 

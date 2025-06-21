@@ -1,0 +1,8 @@
+ go tool cover -func=coverage.out
+
+
+ go test -v ./tests/...
+
+ go tool cover -html=coverage.out -o coverage.html
+
+ go test -v -coverpkg=./internal/db,./internal/handlers,./internal/repository ./tests/... -coverprofile=coverage.out

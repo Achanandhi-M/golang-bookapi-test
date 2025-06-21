@@ -1,25 +1,27 @@
-```markdown
-# Book Tracker API
+Book Tracker API
 
-A RESTful API built with Go for tracking books you're reading. Manage book details like title, author, and reading progress, with data stored in a PostgreSQL database. The project is containerized using Docker and includes unit, integration, and API tests to ensure reliability.
+A RESTful API built with Go for tracking books you're reading. You can manage book details like title, author, and reading progress, with all data stored in a PostgreSQL database. The project is containerized using Docker and includes unit, integration, and API tests to ensure reliability.
 
-## Features
-- **Create a book**: Add a new book with title, author, and progress (POST `/books`).
-- **Retrieve all books**: List all books (GET `/books`).
-- **Update a book**: Modify a book's details by ID (PUT `/books/{id}`).
-- **Delete a book**: Remove a book by ID (DELETE `/books/{id}`).
-- **Validation**: Ensures non-empty title, author, and non-negative progress.
-- **High Test Coverage**: ~86% coverage with unit, integration, and API tests.
+Features
 
-## Tech Stack
-- **Language**: Go (Golang)
-- **Database**: PostgreSQL
-- **HTTP Router**: [gorilla/mux](https://github.com/gorilla/mux)
-- **Database Library**: [jmoiron/sqlx](https://github.com/jmoiron/sqlx)
-- **Containerization**: Docker & Docker Compose
-- **Testing**: Go's `testing` package with `httptest`
+* Create a book: Add a new book with title, author, and progress (POST `/books`)
+* Retrieve all books: List all books (GET `/books`)
+* Update a book: Modify a book's details by ID (PUT `/books/{id}`)
+* Delete a book: Remove a book by ID (DELETE `/books/{id}`)
+* Validation: Ensures non-empty title, author, and non-negative progress
+* High Test Coverage: Approximately 86% coverage with unit, integration, and API tests
 
-## Project Structure
+Tech Stack
+
+* Language: Go (Golang)
+* Database: PostgreSQL
+* HTTP Router: gorilla/mux
+* Database Library: sqlx
+* Containerization: Docker & Docker Compose
+* Testing: Go’s testing package with httptest
+
+Project Structure
+
 ```
 book-tracker/
 ├── Dockerfile
@@ -48,153 +50,186 @@ book-tracker/
         └── handlers_test.go
 ```
 
-- **`cmd/server/main.go`**: Application entry point, sets up the HTTP server.
-- **`internal/`**: Private packages for database, handlers, models, and repository.
-- **`tests/`**: Unit, integration, and API tests for robust coverage.
-- **`.env`**: Environment variables for database configuration.
-- **`Dockerfile` & `docker-compose.yml`**: Containerizes the app and database.
+Explanation of Structure:
 
-## Prerequisites
-- **Docker**: Install [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/).
-- **Git**: To clone the repository.
-- **curl** (optional): For manual API testing.
-- **Go** (optional): Only needed if running without Docker.
+* `cmd/server/main.go`: The entry point that sets up the HTTP server
+* `internal/`: Contains private application logic including handlers, models, db code, and repository pattern
+* `tests/`: Includes unit, integration, and API tests to ensure proper behavior
+* `.env`: Stores environment variables for configuring the database
+* `Dockerfile` & `docker-compose.yml`: Used for containerizing and orchestrating the app and database
 
-## Setup Instructions
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/<your-username>/book-tracker.git
-   cd book-tracker
-   ```
+Prerequisites
 
-2. **Create a `.env` File**:
-   Create a `.env` file in the project root with the following content:
-   ```plaintext
-   POSTGRES_HOST=db
-   POSTGRES_PORT=5432
-   POSTGRES_USER=bookuser
-   POSTGRES_PASSWORD=bookpassword
-   POSTGRES_DB=bookdb
-   ```
-   - These variables configure the PostgreSQL connection.
-   - Ensure `POSTGRES_HOST=db` matches the service name in `docker-compose.yml`.
+To run this project, make sure you have:
 
-3. **Build and Start Containers**:
-   ```bash
-   docker-compose up -d
-   ```
-   - Starts two containers:
-     - `book-tracker-app-1`: Go API on `http://localhost:8080`.
-     - `book-tracker-db-1`: PostgreSQL database.
-   - Verify containers are running:
-     ```bash
-     docker ps
-     ```
+* Docker: [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
+* Docker Compose: [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
+* Git: For cloning the repository
+* curl (optional): For manually testing the API
+* Go (optional): Only required if not using Docker
 
-## Running the Application
-The API is accessible at `http://localhost:8080` after starting the containers. Test the API with `curl` or a tool like Postman.
+Setup Instructions
 
-### Example `curl` Commands
-1. **Create a Book**:
-   ```bash
-   curl -X POST http://localhost:8080/books \
-     -H "Content-Type: application/json" \
-     -d '{"title":"The Hobbit","author":"J.R.R. Tolkien","progress":50}'
-   ```
-   **Expected**: `201 Created`, returns book with ID.
+Step 1: Clone the Repository
 
-2. **Retrieve All Books**:
-   ```bash
-   curl -X GET http://localhost:8080/books
-   ```
-   **Expected**: `200 OK`, returns array of books.
-
-3. **Update a Book** (replace `1` with actual book ID):
-   ```bash
-   curl -X PUT http://localhost:8080/books/1 \
-     -H "Content-Type: application/json" \
-     -d '{"title":"The Hobbit Updated","author":"J.R.R. Tolkien","progress":75}'
-   ```
-   **Expected**: `200 OK`, returns updated book.
-
-4. **Delete a Book** (replace `1` with actual book ID):
-   ```bash
-   curl -X DELETE http://localhost:8080/books/1
-   ```
-   **Expected**: `204 No Content`.
-
-5. **Error Case: Invalid Input**:
-   ```bash
-   curl -X POST http://localhost:8080/books \
-     -H "Content-Type: application/json" \
-     -d '{}'
-   ```
-   **Expected**: `400 Bad Request`, error message.
-
-For a full test script, see `test_api_curl_commands.sh` in the repository (run with `bash test_api_curl_commands.sh`).
-
-## Running Tests
-The project includes unit, integration, and API tests, achieving ~86% coverage.
-
-1. **Access the App Container**:
-   ```bash
-   docker exec -it book-tracker-app-1 sh
-   ```
-
-2. **Run All Tests**:
-   Inside the container, execute:
-   ```bash
-   go test -v -coverpkg=./internal/db,./internal/handlers,./internal/repository ./tests/... -coverprofile=coverage.out
-   ```
-   - `-v`: Verbose output, shows test details.
-   - `-coverpkg`: Measures coverage for specified packages.
-   - `-coverprofile`: Saves coverage data to `coverage.out`.
-   - **Expected Output**: Test results (PASS/FAIL) and coverage (e.g., 86.6%).
-
-3. **View Coverage Report**:
-   ```bash
-   go tool cover -func=coverage.out
-   ```
-   Shows per-function coverage.
-
-4. **Generate HTML Coverage Report**:
-   ```bash
-   go tool cover -html=coverage.out -o coverage.html
-   ```
-   Copy the HTML file to your host machine:
-   ```bash
-   exit  # Exit container
-   docker cp book-tracker-app-1:/app/coverage.html .
-   ```
-   Open `coverage.html` in a browser to visualize coverage.
-
-## Troubleshooting
-- **API Not Responding**:
-  - Check container logs: `docker logs book-tracker-app-1`.
-  - Ensure database is running: `docker ps`.
-  - Verify `.env` credentials match `docker-compose.yml`.
-- **Test Failures**:
-  - Run tests with `-v` for detailed output: `go test -v ./tests/...`.
-  - Check database connection: `psql -h localhost -p 5432 -U bookuser -d bookdb`.
-  - Clear Go cache: `go clean -cache`.
-- **Port Conflicts**:
-  - If port `8080` is in use, change the port mapping in `docker-compose.yml` (e.g., `8081:8080`).
-- **Database Issues**:
-  - Truncate table to reset:
-    ```bash
-    docker exec -it book-tracker-app-1 psql -h db -U bookuser -d bookdb -c "TRUNCATE TABLE books RESTART IDENTITY;"
-    ```
-
-## Contributing
-1. Fork the repository.
-2. Create a branch: `git checkout -b feature/your-feature`.
-3. Commit changes: `git commit -m "Add your feature"`.
-4. Push to your fork: `git push origin feature/your-feature`.
-5. Open a pull request.
-
-
-## Acknowledgments
-- Built with inspiration from Go's simplicity and clean architecture principles.
-- Thanks to [gorilla/mux](https://github.com/gorilla/mux) and [sqlx](https://github.com/jmoiron/sqlx) for robust libraries.
+```bash
+git clone https://github.com/<your-username>/book-tracker.git
+cd book-tracker
 ```
 
+Step 2: Create a `.env` File
+
+```env
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+POSTGRES_USER=bookuser
+POSTGRES_PASSWORD=bookpassword
+POSTGRES_DB=bookdb
+```
+
+Make sure the value of `POSTGRES_HOST` matches the service name (`db`) in `docker-compose.yml`.
+
+Step 3: Build and Start the Containers
+
+```bash
+docker-compose up -d
+```
+
+This will start:
+
+* `book-tracker-app-1`: Go API server accessible at `http://localhost:8080`
+* `book-tracker-db-1`: PostgreSQL instance
+
+Verify that containers are running:
+
+```bash
+docker ps
+```
+
+Running the Application
+
+Once the containers are up, the API is available at `http://localhost:8080`. You can test it using curl or Postman.
+
+Example curl Commands
+
+Create a Book
+
+```bash
+curl -X POST http://localhost:8080/books \
+  -H "Content-Type: application/json" \
+  -d '{"title":"The Hobbit","author":"J.R.R. Tolkien","progress":50}'
+```
+
+Expected: HTTP 201 Created with the created book object
+
+Retrieve All Books
+
+```bash
+curl -X GET http://localhost:8080/books
+```
+
+Expected: HTTP 200 OK with a list of books
+
+Update a Book (Replace `1` with actual ID)
+
+```bash
+curl -X PUT http://localhost:8080/books/1 \
+  -H "Content-Type: application/json" \
+  -d '{"title":"The Hobbit Updated","author":"J.R.R. Tolkien","progress":75}'
+```
+
+Expected: HTTP 200 OK with updated book data
+
+Delete a Book (Replace `1` with actual ID)
+
+```bash
+curl -X DELETE http://localhost:8080/books/1
+```
+
+Expected: HTTP 204 No Content
+
+Invalid Input Example
+
+```bash
+curl -X POST http://localhost:8080/books \
+  -H "Content-Type: application/json" \
+  -d '{}'
+```
+
+Expected: HTTP 400 Bad Request with error message
+
+Note: A script `test_api_curl_commands.sh` is available for testing all endpoints at once.
+
+Running Tests
+
+The app includes all types of tests and reaches approximately 86% coverage.
+
+Step 1: Access the App Container
+
+```bash
+docker exec -it book-tracker-app-1 sh
+```
+
+Step 2: Run All Tests
+
+```bash
+go test -v -coverpkg=./internal/db,./internal/handlers,./internal/repository ./tests/... -coverprofile=coverage.out
+```
+
+* `-v` shows verbose output
+* `-coverpkg` tracks coverage across multiple packages
+* `-coverprofile` stores coverage data
+
+Step 3: View Function-Level Coverage
+
+```bash
+go tool cover -func=coverage.out
+```
+
+Step 4: Generate and View HTML Coverage Report
+
+```bash
+go tool cover -html=coverage.out -o coverage.html
+exit
+docker cp book-tracker-app-1:/app/coverage.html .
+```
+
+Open `coverage.html` in your browser to explore the coverage visually.
+
+Troubleshooting
+
+API Not Responding
+
+* Check logs: `docker logs book-tracker-app-1`
+* Verify PostgreSQL is running: `docker ps`
+* Confirm `.env` matches `docker-compose.yml`
+
+Test Failures
+
+* Run with verbose mode: `go test -v ./tests/...`
+* Ensure DB is accessible: `psql -h localhost -p 5432 -U bookuser -d bookdb`
+* Clean cache: `go clean -cache`
+
+Port Conflicts
+
+* If `8080` is busy, change it in `docker-compose.yml` to another port like `8081:8080`
+
+Resetting Database
+
+To wipe the `books` table:
+
+```bash
+docker exec -it book-tracker-app-1 psql -h db -U bookuser -d bookdb -c "TRUNCATE TABLE books RESTART IDENTITY;"
+```
+
+Contributing
+
+1. Fork this repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Commit your work: `git commit -m "Add your feature"`
+4. Push it: `git push origin feature/your-feature`
+5. Open a pull request
+
+Acknowledgments
+
+This project was inspired by Go's clean and minimal architecture. Thanks to open-source contributors of libraries like gorilla/mux and sqlx for making development easy and robust.

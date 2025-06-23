@@ -22,10 +22,11 @@ jobs:
       - name: Install Dependencies
         run: |
           go mod tidy
-    
-      - name: Set up Docker Compose and start services
-        run: |
-          docker-compose -f docker-compose.yml up -d
+        
+      - name: Docker Compose Action
+        uses: hoverkraft-tech/compose-action@v2.2.0
+        with:
+          compose-file: "docker-compose.yml"
     
       # Step 6: Setup Keploy
       - name: Setup Keploy

@@ -35,8 +35,6 @@ jobs:
       - name: Setup Keploy
         run: |
           curl --silent -L https://keploy.io/ent/install.sh | bash
-          chmod +x keploy
-          sudo mv keploy /usr/local/bin/
 
       # Step 6: Run Keploy Test Suite
       - name: Run Keploy Test Suite

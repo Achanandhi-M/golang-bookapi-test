@@ -34,7 +34,7 @@ jobs:
       # Step 6: Setup Keploy
       - name: Setup Keploy
         run: |
-          curl -Lo keploy curl --silent -O -L https://keploy.io/ent/install.sh && source install.sh
+          curl --silent -L https://keploy.io/ent/install.sh | bash
           chmod +x keploy
           sudo mv keploy /usr/local/bin/
 

@@ -30,6 +30,13 @@ jobs:
       # Step 5: Setup PostgreSQL
       - name: Setup PostgreSQL
         uses: Harmon758/postgresql-action@v1.0.0
+    
+      # Step 6: Setup Keploy
+      - name: Setup Keploy
+        run: |
+          curl -Lo keploy curl --silent -O -L https://keploy.io/ent/install.sh && source install.sh
+          chmod +x keploy
+          sudo mv keploy /usr/local/bin/
 
       # Step 6: Run Keploy Test Suite
       - name: Run Keploy Test Suite

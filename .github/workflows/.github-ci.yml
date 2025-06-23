@@ -22,22 +22,23 @@ jobs:
       - name: Install Dependencies
         run: |
           go mod tidy
-
-      # Step 4: Build the application
-      - name: Docker Setup Buildx
-        uses: docker/setup-buildx-action@v3.11.1
-
-      # Step 5: Setup PostgreSQL
-      - name: Setup PostgreSQL
-        uses: Harmon758/postgresql-action@v1.0.0
+    
+      - name: Set up Docker Compose and start services
+        run: |
+          docker-compose -f docker-compose.yml up -d
     
       # Step 6: Setup Keploy
       - name: Setup Keploy
         run: |
           curl --silent -L https://keploy.io/ent/install.sh | bash
 
-      # Step 6: Run Keploy Test Suite
+      # Step 7: Run Keploy Test Suite
       - name: Run Keploy Test Suite
         run: |
           export KEPLOY_API_KEY=Ee6Tq2LOx77IhixbEg==
           keploy test-suite --app=03d24177-315c-4ee1-a3ac-64ed0ab38567 --base-path http://localhost:8080/books --cloud
+
+     # Step 8: Tear down Docker Compose after tests
+      - name: Tear down Docker Compose
+        run: |
+            docker-compose down

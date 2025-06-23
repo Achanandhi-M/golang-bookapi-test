@@ -36,5 +36,5 @@ jobs:
       # Step 5: Run Keploy Test Suite
       - name: Run Keploy Test Suite
         run: |
-          export KEPLOY_API_KEY=Ee6Tq2LOx77IhixbEg==
+          export KEPLOY_API_KEY=${{ secrets.KEPLOY_API_KEY }}
           keploy test-suite --app=03d24177-315c-4ee1-a3ac-64ed0ab38567 --base-path http://localhost:8080/books --cloud

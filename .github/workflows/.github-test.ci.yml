@@ -23,15 +23,19 @@ jobs:
         run: |
           go mod tidy
         
-      - name: Docker Compose Action
+      # Step 4: Set up Docker Compose and start services
+      - name: Set up Docker Compose and start services
         uses: hoverkraft-tech/compose-action@v2.2.0
         with:
           compose-file: "docker-compose.yml"
-    
-      # Step 4: Setup test
-      - name: Setup Test
-        run: |
-            go test -v -coverpkg=./internal/db,./internal/handlers,./internal/repository ./tests/... -coverprofile=coverage.out
-            go tool cover -func=coverage.out
 
-     
+      # Step 5: Run Go Tests Inside Docker
+      - name: Run Go Tests Inside Docker
+        run: |
+          docker-compose exec -T app bash -c "go test -v -coverpkg=./internal/db,./internal/handlers,./internal/repository ./tests/... -coverprofile=coverage.out"
+        
+      # Step 6: Generate and show the coverage report
+      - name: Generate Coverage Report
+        run: |
+          docker-compose exec -T app bash -c "go tool cover -func=coverage.out"
+        

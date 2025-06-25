@@ -27,25 +27,13 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.2.0
         with:
           compose-file: "docker-compose.yml"
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      # Step 1: Setup Keploy
-      - name: Wait for Application to be Ready
+    
+      # Step 4: Setup Keploy
+      - name: Setup Keploy
         run: |
-         echo "Waiting for application to be ready..."
-         for i in {1..30}; do
-          if curl --silent --head --fail http://localhost:8080; then
-            echo "Application is ready!"
-            break
-          else
-            echo "Waiting for application to be ready... $i"
-            sleep 5
-          fi
-         done
+          curl --silent -L https://keploy.io/ent/install.sh | bash
 
-      # Step 2: Run Keploy Test Suite
+      # Step 5: Run Keploy Test Suite
       - name: Run Keploy Test Suite
         run: |
           export KEPLOY_API_KEY=${{ secrets.KEPLOY_API_KEY }}

@@ -29,5 +29,9 @@ jobs:
           compose-file: "docker-compose.yml"
     
       # Step 4: Setup test
-    
+      - name: Setup Test
+        run: |
+            go test -v -coverpkg=./internal/db,./internal/handlers,./internal/repository ./tests/... -coverprofile=coverage.out
+            go tool cover -func=coverage.out
+
      

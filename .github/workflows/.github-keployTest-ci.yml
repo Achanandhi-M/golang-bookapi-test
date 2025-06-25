@@ -1,4 +1,4 @@
-name: CI/CD Pipeline for Book Tracker API
+name: CI/CD Pipeline for Book Tracker API With Keploy
 
 on:
   push:
@@ -27,13 +27,16 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.2.0
         with:
           compose-file: "docker-compose.yml"
-    
-      # Step 4: Setup Keploy
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # Step 1: Setup Keploy
       - name: Setup Keploy
         run: |
           curl --silent -L https://keploy.io/ent/install.sh | bash
 
-      # Step 5: Run Keploy Test Suite
+      # Step 2: Run Keploy Test Suite
       - name: Run Keploy Test Suite
         run: |
           export KEPLOY_API_KEY=${{ secrets.KEPLOY_API_KEY }}

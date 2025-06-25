@@ -1,0 +1,16 @@
+curl -X POST http://localhost:8080/books \
+  -H "Content-Type: application/json" \
+  -d '{"title":"The Hobbit","author":"J.R.R. Tolkien","progress":50}'
+
+
+
+curl -X GET http://localhost:8080/books
+
+
+curl -X PUT http://localhost:8080/books/1 \
+  -H "Content-Type: application/json" \
+  -d '{"title":"The Hobbit Updated","author":"J.R.R. Tolkien","progress":75}'
+
+curl -X DELETE http://localhost:8080/books/1
+
+
